@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Booking System | نظام الحجز الذكي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #0f172a;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    :root {
+      --primary: #38bdf8;
+      --secondary: #7c3aed;
+      --dark: #0f172a;
+      --card: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.12);
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      backdrop-filter: blur(20px);
+      background: rgba(15, 23, 42, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: white;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    /* language toggle button style */
+    .lang-toggle {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.3s;
+      font-size: 0.9rem;
+    }
+
+    .lang-toggle:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #0f172a;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 20px 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: var(--secondary);
+      filter: blur(160px);
+      opacity: 0.4;
+      top: -150px;
+      right: -100px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: var(--primary);
+      filter: blur(140px);
+      opacity: 0.3;
+      bottom: -100px;
+      left: -100px;
+    }
+
+    .hero-content {
+      max-width: 1200px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 50px;
+      align-items: center;
+      z-index: 1;
+    }
+
+    .hero-text h1 {
+      font-size: 4rem;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .hero-text span {
+      color: var(--primary);
+    }
+
+    .hero-text p {
+      color: #cbd5e1;
+      margin-bottom: 30px;
+      line-height: 1.8;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 14px 28px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4);
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-4px);
+    }
+
+    .secondary-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    .secondary-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .booking-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 30px;
+      padding: 35px;
+      backdrop-filter: blur(25px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .booking-card h2 {
+      margin-bottom: 25px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #cbd5e1;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      outline: none;
+    }
+
+    section {
+      padding: 100px 20px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-title h2 {
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+    }
+
+    .section-title p {
+      color: #94a3b8;
+    }
+
+    .features {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 35px;
+      border-radius: 25px;
+      transition: 0.4s;
+      backdrop-filter: blur(20px);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--primary);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      margin-bottom: 15px;
+    }
+
+    .feature-card p {
+      color: #cbd5e1;
+      line-height: 1.7;
+    }
+
+    .stats {
+      max-width: 1100px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .stat-box {
+      background: var(--card);
+      border-radius: 25px;
+      padding: 35px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .stat-box h3 {
+      font-size: 3rem;
+      color: var(--primary);
+    }
+
+    .dashboard {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 30px;
+    }
+
+    .sidebar {
+      background: var(--card);
+      border-radius: 25px;
+      padding: 30px;
+      border: 1px solid var(--border);
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar li {
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 14px;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .sidebar li:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .dashboard-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .dashboard-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      padding: 30px;
+    }
+
+    .dashboard-card h4 {
+      color: #cbd5e1;
+      margin-bottom: 10px;
+    }
+
+    .dashboard-card h2 {
+      font-size: 2.5rem;
+      color: var(--primary);
+    }
+
+    .testimonials {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    .testimonial {
+      background: var(--card);
+      border-radius: 25px;
+      padding: 30px;
+      border: 1px solid var(--border);
+    }
+
+    .testimonial p {
+      color: #cbd5e1;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+    }
+
+    .floating {
+      animation: floating 4s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: 1s;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media(max-width: 900px) {
+      .hero-text h1 {
+        font-size: 2.8rem;
+      }
+
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        gap: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <nav>
+      <div class="logo" data-key="brand">SmartBooking</div>
+      <ul class="nav-links">
+        <li><a href="#home" data-key="nav_home">Home</a></li>
+        <li><a href="#features" data-key="nav_features">Features</a></li>
+        <li><a href="#dashboard" data-key="nav_dashboard">Dashboard</a></li>
+        <li><a href="#reviews" data-key="nav_reviews">Reviews</a></li>
+        <li><a href="#contact" data-key="nav_contact">Contact</a></li>
+        <li><button class="lang-toggle" id="langToggleBtn">🇸🇦 العربية</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <div class="hero-text reveal">
+        <h1><span data-key="hero_highlight">Modern</span> <span data-key="hero_title">Smart Booking Experience</span></h1>
+        <p data-key="hero_desc">
+          A futuristic reservation platform designed for businesses,
+          hotels, clinics, salons, events, and modern startups.
+          Manage bookings intelligently with beautiful UI and real-time scheduling.
+        </p>
+        <div class="btn-group">
+          <a href="#booking" class="btn primary-btn" data-key="start_btn">Start Booking</a>
+          <a href="#features" class="btn secondary-btn" data-key="explore_btn">Explore Features</a>
+        </div>
+      </div>
+
+      <div class="booking-card floating reveal" id="booking">
+        <h2 data-key="book_appointment">Book Appointment</h2>
+        <div class="input-group">
+          <label data-key="fullname_label">Full Name</label>
+          <input type="text" placeholder="Enter your name" data-key-placeholder="name_placeholder">
+        </div>
+        <div class="input-group">
+          <label data-key="service_label">Service</label>
+          <select>
+            <option data-key="hotel_opt">Hotel Reservation</option>
+            <option data-key="clinic_opt">Clinic Appointment</option>
+            <option data-key="event_opt">Event Booking</option>
+            <option data-key="workspace_opt">Workspace Reservation</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label data-key="date_label">Date</label>
+          <input type="date">
+        </div>
+        <div class="input-group">
+          <label data-key="time_label">Time</label>
+          <input type="time">
+        </div>
+        <button class="btn primary-btn" style="width:100%;" onclick="bookNow()" data-key="confirm_btn">
+          Confirm Booking
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="section-title reveal">
+      <h2 data-key="features_title">Amazing Features</h2>
+      <p data-key="features_sub">Designed to deliver a premium booking experience.</p>
+    </div>
+    <div class="features">
+      <div class="feature-card reveal">
+        <div class="feature-icon">⚡</div>
+        <h3 data-key="feature1_title">Real-Time Booking</h3>
+        <p data-key="feature1_desc">Instant reservation system with live schedule updates and smart availability.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">📊</div>
+        <h3 data-key="feature2_title">Analytics Dashboard</h3>
+        <p data-key="feature2_desc">Powerful analytics and statistics to monitor bookings and revenue.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">🔐</div>
+        <h3 data-key="feature3_title">Secure Authentication</h3>
+        <p data-key="feature3_desc">User accounts, protected login, and advanced booking management.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">📱</div>
+        <h3 data-key="feature4_title">Responsive Design</h3>
+        <p data-key="feature4_desc">Fully optimized for desktop, tablet, and mobile devices.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title reveal">
+      <h2 data-key="stats_title">Platform Statistics</h2>
+      <p data-key="stats_sub">Trusted by thousands of users worldwide.</p>
+    </div>
+    <div class="stats">
+      <div class="stat-box reveal">
+        <h3 id="users">0</h3>
+        <p data-key="stat_users">Active Users</p>
+      </div>
+      <div class="stat-box reveal">
+        <h3 id="bookings">0</h3>
+        <p data-key="stat_bookings">Bookings</p>
+      </div>
+      <div class="stat-box reveal">
+        <h3 id="business">0</h3>
+        <p data-key="stat_business">Businesses</p>
+      </div>
+      <div class="stat-box reveal">
+        <h3 id="reviewsCount">0</h3>
+        <p data-key="stat_reviews">Positive Reviews</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="dashboard">
+    <div class="section-title reveal">
+      <h2 data-key="dashboard_title">Professional Dashboard</h2>
+      <p data-key="dashboard_sub">Smart tools to manage bookings efficiently.</p>
+    </div>
+    <div class="dashboard">
+      <div class="sidebar reveal">
+        <ul>
+          <li data-key="sidebar_reservations">📅 Reservations</li>
+          <li data-key="sidebar_analytics">📈 Analytics</li>
+          <li data-key="sidebar_users">👤 User Management</li>
+          <li data-key="sidebar_payments">💳 Payments</li>
+          <li data-key="sidebar_settings">⚙ Settings</li>
+        </ul>
+      </div>
+      <div class="dashboard-content">
+        <div class="dashboard-card reveal">
+          <h4 data-key="revenue_label">Total Revenue</h4>
+          <h2>$18K</h2>
+        </div>
+        <div class="dashboard-card reveal">
+          <h4 data-key="monthly_label">Monthly Bookings</h4>
+          <h2>1,240</h2>
+        </div>
+        <div class="dashboard-card reveal">
+          <h4 data-key="newusers_label">New Users</h4>
+          <h2>320</h2>
+        </div>
+        <div class="dashboard-card reveal">
+          <h4 data-key="conversion_label">Conversion Rate</h4>
+          <h2>92%</h2>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <div class="section-title reveal">
+      <h2 data-key="testimonial_title">What Clients Say</h2>
+      <p data-key="testimonial_sub">Businesses love our smart reservation system.</p>
+    </div>
+    <div class="testimonials">
+      <div class="testimonial reveal">
+        <p data-key="testimonial1">“This booking platform completely transformed our reservation workflow. The interface is modern and incredibly easy to use.”</p>
+        <h4>— Sarah Johnson</h4>
+      </div>
+      <div class="testimonial reveal">
+        <p data-key="testimonial2">“Beautiful dashboard, fast booking system, and excellent user experience. Perfect for modern businesses.”</p>
+        <h4>— David Smith</h4>
+      </div>
+      <div class="testimonial reveal">
+        <p data-key="testimonial3">“The animations and design make this platform feel like a real startup product. Very impressive work.”</p>
+        <h4>— Emma Brown</h4>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <h3 data-key="footer_brand">SmartBooking © 2026</h3>
+    <p data-key="footer_desc">Designed with creativity and modern web technologies-Dv_roumaissa.</p>
+  </footer>
+
+  <script>
+    // Translation dictionary (English -> Arabic)
+    const arabicTranslations = {
+      brand: "حجز ذكي",
+      nav_home: "الرئيسية",
+      nav_features: "المميزات",
+      nav_dashboard: "لوحة التحكم",
+      nav_reviews: "التقييمات",
+      nav_contact: "اتصل بنا",
+      hero_highlight: "عصرية",
+      hero_title: "تجربة حجز ذكية",
+      hero_desc: "منصة حجز مستقبلية مصممة للشركات والفنادق والعيادات والصالونات والفعاليات والشركات الناشئة الحديثة. إدارة الحجوزات بذكاء مع واجهة مستخدم جميلة وجدولة فورية.",
+      start_btn: "ابدأ الحجز",
+      explore_btn: "استكشف المميزات",
+      book_appointment: "احجز موعداً",
+      fullname_label: "الاسم الكامل",
+      name_placeholder: "أدخل اسمك",
+      service_label: "الخدمة",
+      hotel_opt: "حجز فندق",
+      clinic_opt: "موعد عيادة",
+      event_opt: "حجز فعالية",
+      workspace_opt: "حجز مساحة عمل",
+      date_label: "التاريخ",
+      time_label: "الوقت",
+      confirm_btn: "تأكيد الحجز",
+      features_title: "مميزات مذهلة",
+      features_sub: "مصممة لتقديم تجربة حجز متميزة.",
+      feature1_title: "حجز فوري",
+      feature1_desc: "نظام حجز فوري مع تحديثات الجدول الزمني المباشر والذكاء في التوفر.",
+      feature2_title: "لوحة تحليلات",
+      feature2_desc: "تحليلات قوية وإحصائيات لمتابعة الحجوزات والإيرادات.",
+      feature3_title: "توثيق آمن",
+      feature3_desc: "حسابات مستخدمين، تسجيل دخول محمي، وإدارة متقدمة للحجوزات.",
+      feature4_title: "تصميم متجاوب",
+      feature4_desc: "محسّن بالكامل لأجهزة الكمبيوتر واللوحات والهواتف المحمولة.",
+      stats_title: "إحصائيات المنصة",
+      stats_sub: "موثوق من آلاف المستخدمين حول العالم.",
+      stat_users: "مستخدمين نشطين",
+      stat_bookings: "حجوزات",
+      stat_business: "أعمال تجارية",
+      stat_reviews: "تقييمات إيجابية",
+      dashboard_title: "لوحة تحكم احترافية",
+      dashboard_sub: "أدوات ذكية لإدارة الحجوزات بكفاءة.",
+      sidebar_reservations: "📅 الحجوزات",
+      sidebar_analytics: "📈 التحليلات",
+      sidebar_users: "👤 إدارة المستخدمين",
+      sidebar_payments: "💳 المدفوعات",
+      sidebar_settings: "⚙ الإعدادات",
+      revenue_label: "إجمالي الإيرادات",
+      monthly_label: "الحجوزات الشهرية",
+      newusers_label: "مستخدمين جدد",
+      conversion_label: "معدل التحويل",
+      testimonial_title: "ماذا يقول العملاء",
+      testimonial_sub: "الشركات تحب نظام الحجز الذكي لدينا.",
+      testimonial1: "هذه المنصة غيرت بالكامل سير عمل الحجوزات لدينا. الواجهة حديثة وسهلة الاستخدام بشكل لا يصدق.",
+      testimonial2: "لوحة تحكم جميلة، نظام حجز سريع، وتجربة مستخدم ممتازة. مثالي للأعمال الحديثة.",
+      testimonial3: "الرسوم المتحركة والتصميم يجعلان هذه المنصة تبدو وكأنها منتج شركة ناشئة حقيقي. عمل مذهل.",
+      footer_brand: "حجز ذكي © 2026",
+      footer_desc: "صمم بإبداع وتقنيات ويب حديثة. Dv-roumaissa"
+    };
+
+    let currentLang = 'en'; // 'en' or 'ar'
+
+    function updateLanguage(lang) {
+      const elementsToTranslate = document.querySelectorAll('[data-key]');
+      elementsToTranslate.forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (lang === 'ar' && arabicTranslations[key]) {
+          if (el.tagName === 'INPUT' && el.getAttribute('data-key-placeholder')) {
+            el.placeholder = arabicTranslations[key];
+          } else if (el.tagName === 'OPTION') {
+            el.textContent = arabicTranslations[key];
+          } else {
+            el.textContent = arabicTranslations[key];
+          }
+        } else if (lang === 'en' && originalTexts[key]) {
+          if (el.tagName === 'INPUT' && el.getAttribute('data-key-placeholder')) {
+            el.placeholder = originalTexts[key];
+          } else if (el.tagName === 'OPTION') {
+            el.textContent = originalTexts[key];
+          } else {
+            el.textContent = originalTexts[key];
+          }
+        }
+      });
+
+      // Handle logo separately
+      const logoElem = document.querySelector('.logo');
+      if (logoElem) {
+        if (lang === 'ar') {
+          logoElem.textContent = arabicTranslations.brand;
+        } else {
+          logoElem.textContent = 'SmartBooking';
+        }
+      }
+
+      // Update toggle button text
+      const toggleBtn = document.getElementById('langToggleBtn');
+      if (toggleBtn) {
+        if (lang === 'ar') {
+          toggleBtn.innerHTML = '🇬🇧 English';
+        } else {
+          toggleBtn.innerHTML = '🇸🇦 العربية';
+        }
+      }
+
+      // Set html lang and direction for RTL support subtle (no design change, but text aligns fine)
+      if (lang === 'ar') {
+        document.documentElement.setAttribute('dir', 'rtl');
+        document.documentElement.setAttribute('lang', 'ar');
+        // Adjust some minor spacing without breaking style - just keep as is
+      } else {
+        document.documentElement.setAttribute('dir', 'ltr');
+        document.documentElement.setAttribute('lang', 'en');
+      }
+    }
+
+    // Store original English texts for all data-key elements
+    const originalTexts = {};
+    function storeOriginalTexts() {
+      const elements = document.querySelectorAll('[data-key]');
+      elements.forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (el.tagName === 'INPUT' && el.getAttribute('data-key-placeholder')) {
+          originalTexts[key] = el.placeholder;
+        } else if (el.tagName === 'OPTION') {
+          originalTexts[key] = el.textContent;
+        } else {
+          originalTexts[key] = el.textContent;
+        }
+      });
+      const logoElem = document.querySelector('.logo');
+      if (logoElem) originalTexts.brand = 'SmartBooking';
+    }
+
+    // Toggle language
+    function toggleLanguage() {
+      if (currentLang === 'en') {
+        currentLang = 'ar';
+        updateLanguage('ar');
+      } else {
+        currentLang = 'en';
+        updateLanguage('en');
+      }
+    }
+
+    // Book now alert translation aware
+    function bookNow() {
+      if (currentLang === 'ar') {
+        alert("تم تأكيد الحجز بنجاح!");
+      } else {
+        alert("Booking Confirmed Successfully!");
+      }
+    }
+
+    // Store original texts on page load
+    storeOriginalTexts();
+    updateLanguage('en'); // initialize English
+    
+    // Add event listener to toggle button
+    const toggleBtn = document.getElementById('langToggleBtn');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', toggleLanguage);
+    }
+
+    // Animate stats and reveal on scroll (preserve original functionality)
+    const reveals = document.querySelectorAll('.reveal');
+
+    function revealOnScroll() {
+      reveals.forEach((el) => {
+        const windowHeight = window.innerHeight;
+        const elementTop = el.getBoundingClientRect().top;
+
+        if (elementTop < windowHeight - 100) {
+          el.classList.add('active');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', revealOnScroll);
+    revealOnScroll();
+
+    function animateValue(id, start, end, duration) {
+      let range = end - start;
+      let current = start;
+      let increment = end > start ? 1 : -1;
+      let stepTime = Math.abs(Math.floor(duration / range));
+      let obj = document.getElementById(id);
+
+      let timer = setInterval(function () {
+        current += increment;
+        obj.innerHTML = current + '+';
+
+        if (current == end) {
+          clearInterval(timer);
+        }
+      }, stepTime);
+    }
+
+    animateValue('users', 0, 12, 2000);
+    animateValue('bookings', 0, 25, 2500);
+    animateValue('business', 0, 8, 1800);
+    animateValue('reviewsCount', 0, 15, 2200);
+
+    // Make sure that the dynamically added numbers remain, no translation needed for numeric counters
+    // The stat labels are already updated via data-key, perfect
+  </script>
+</body>
+
+</html>
