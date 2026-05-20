@@ -24,9 +24,9 @@ A modern and futuristic booking platform UI designed for businesses, hotels, cli
 
 Add your deployed website link here.
 
-## 📷 Preview
+## Preview
 
-Add screenshots of the project here.
+![Website Preview](images/preview.jpg)
 
 ## 📂 Project Structure
 
